@@ -86,4 +86,78 @@ $(document).ready(function() {
             }
         });
     });
+
+   $('.delete-phones-btn').on('click', function(event) {
+        event.preventDefault();
+
+        var button = $(this);
+        var id = button.data('id'); // Get the ID 
+
+        // Confirm before deleting
+        if (confirm('Are you sure you want to delete this item?')) {
+            $.ajax({
+                url: 'form.php',
+                type: 'POST',
+                data: {
+                    delete: true,
+                    table: 'users_phones',  
+                    flag: 'checkbox', // the flag column
+                    id: id
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        // Remove the row from the table
+
+                        alert('Item deleted successfully');
+
+                        button.closest('tr').remove();
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred');
+                }
+            });
+        }
+    }); 
+
+   $('.delete-emails-btn').on('click', function(event) {
+        event.preventDefault();
+
+        var button = $(this);
+        var id = button.data('id'); // Get the ID 
+
+        // Confirm before deleting
+        if (confirm('Are you sure you want to delete this item?')) {
+            $.ajax({
+                url: 'form.php',
+                type: 'POST',
+                data: {
+                    delete: true,
+                    table: 'data_users',  
+                    flag: 'checkbox', // the flag column
+                    id: id
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        
+                        // Remove the row from the table
+                        alert('Item deleted successfully');
+
+                        button.closest('tr').remove();
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred');
+                }
+            });
+        }
+    }); 
+
+
 });

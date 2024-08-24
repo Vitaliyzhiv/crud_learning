@@ -119,12 +119,13 @@ class FormController
         return $response;
     }
 
-     /**
+    /**
      * Delete data from the database table
      * @param string $table Name of the database table
      * @param int $data ID of the data to be deleted
      */
-    public function deleteData($tableName, $dataID) {
+    public function deleteData($tableName, $dataID)
+    {
         $query = "DELETE FROM $tableName WHERE id = $dataID";
         if ($this->db->query($query)) {
             return true;
@@ -132,5 +133,60 @@ class FormController
             return false;
         }
     }
+
+    /**
+    * Delete data from the database table
+    * @param string $table Name of the database table
+    * @param string $flag string of flag that would be changed 
+    * @param int $data ID of the data to be deleted from view
+
+    */
+    public function deleteDataView($tableName, $flag, $dataID)
+    {
+        $query = "UPDATE `$tableName` SET `$flag` = ? WHERE `id` = ?";
+        $params = [0, $dataID];
+
+        if ($this->db->query($query, $params)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+    * Edit  table data 
+    * @param string $table Name of the database table
+    * @param array $data array of data to be edited
+    * @param int $dataID ID of the data to be edited
+
+    */
+    public function editTable(string $tableName, array $data, int $id)
+{
+    $set = [];
+    $params = [];
+    
+    foreach ($data as $key => $value) {
+        $set[] = " `$key` = ?";
+        $params[] = $value;
+    }
+    
+    $setString = implode(', ', $set);
+    
+
+    $query = "UPDATE `$tableName` SET $setString WHERE `id` = ?";
+    $params[] = $id; 
+
+    // echo "Query: $query\n";
+    // print_r($params);
+
+
+    // Виконання запиту
+    if ($this->db->query($query, $params)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 }
 

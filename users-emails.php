@@ -9,7 +9,7 @@ $config = require_once 'config.php';
 $db = (Db::getInstance())->getConnection($config['db']);
 
 // Select all data from table
-$sql = 'SELECT * FROM data_users';
+$sql = 'SELECT * FROM data_users WHERE checkbox = 1';
 
 // Execute the query
 $result = $db->query($sql);
@@ -46,6 +46,7 @@ $emails_data = $result->findAll();
                         <th>ID</th>
                         <th>Name</th>
                         <th>Phone</th>
+                        <th> Actions </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +55,11 @@ $emails_data = $result->findAll();
                             <td><?php echo htmlspecialchars($email['id']); ?></td>
                             <td><?php echo htmlspecialchars($email['user']); ?></td>
                             <td><?php echo htmlspecialchars($email['email']); ?></td>
+                            <td>
+                                <a href="?id=<?php echo $email['id'];?>" class="btn btn-primary">Edit</a>
+                                <!-- Delete button -->
+                                <a href="?id=<?php echo $email['id'];?>" class="btn btn-danger delete-emails-btn" data-id="<?php echo $email['id'];?>" name="delete">Delete</a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>   
                 </tbody>

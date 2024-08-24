@@ -4,8 +4,13 @@
 include 'classes/formController.php';
 include 'classes/Db.php';
 
+
 // Load the database configuration
 $config = require_once 'config.php';
+
+// Get user ID from the URL query parameter if provided, otherwise set it to null
+$get_id = isset($_GET['id']) ? $_GET['id'] : null;
+
 
 // Create a database connection instance
 $db = (Db::getInstance())->getConnection($config['db']);
@@ -73,19 +78,54 @@ if (isset($_POST['data-button'])) {
     }
 }
 
+// delete data view changing flag value to 0 
+if (isset($_POST['delete'])) {
 
+    $tableName = isset($_POST['table']) ? $_POST['table'] : '';
+    $flag = isset($_POST['flag']) ? $_POST['flag'] : '';
+    $dataID = isset($_POST['id']) ? $_POST['id'] : '';
 
-$sql_phones = 'SELECT * FROM users_phones';
+    if ($tableName && $flag && $dataID) {
+        // Create an instance of FormController
+        $formController = new FormController($config['db']);
 
+        // Call the method to delete the data
+        $result = $formController->deleteDataView($tableName, $flag, $dataID);
 
-$sql_users = 'SELECT * FROM data_users';
+        if ($result) {
+            echo json_encode(['success' => true, 'message' => 'Item deleted successfully']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Failed to delete item']);
+        }
+        exit();
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Invalid parameters']);
+        exit();
+    }
+}
 
-$result_phones = $db->query($sql_phones);
-$result_users = $db->query($sql_users);
+if (isset($_POST['edit'])) {
+    $tableName = isset($_POST['table']) ? $_POST['table'] : '';
+    $dataJson = isset($_POST['dataTable']) ? $_POST['dataTable'] : '';
+    $id = isset($_POST['id']) ? $_POST['id'] : '';
 
+    if ($tableName && $dataJson && $id) {
+        // Декодуємо JSON в асоціативний масив
+        $data = json_decode($dataJson, true);
+        // echo $data;
 
-$phones_data = $result_phones->findAll();
+        // Перевірка на помилки JSON
+        if (json_last_error() === JSON_ERROR_NONE) {
+            $formController = new FormController($config['db']);
 
-$users_data = $result_users->findAll();
-
-
+            $result = $formController->editTable($tableName, $data, $id);
+            if ($result) {
+                echo json_encode(['success' => true, 'message' => 'Item updated successfully']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Failed to update item']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid JSON data']);
+        }
+    }
+}
