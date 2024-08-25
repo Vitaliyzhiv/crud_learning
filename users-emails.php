@@ -105,16 +105,17 @@ $emails_data = $result->findAll();
 
                         <script>
                             function submitForm(id) {
+                                
+                                function validateEmail(email) {
+                                    var re = /\S+@\S+\.\S+/;
+                                    return re.test(email);
+                                }
+                                
                                 var name = $('#name' + id).val();
                                 var email = $('#email' + id).val();
-
-                                    function validateEmail(email) {
-                                        var re = /\S+@\S+\.\S+/;
-                                        return re.test(email);
-                                    }
                                 
-                                    if (!validateEmail(userEmail)) {
-                                        $('.errors').html('<p style="color: red;">Please enter a valid email address.</p>');
+                                    if (!validateEmail(email)) {
+                                        alert('Please enter a valid email address.');
                                         return;  
                                     }
 

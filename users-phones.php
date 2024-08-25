@@ -117,7 +117,7 @@ $phones_data = $result->findAll();
                             function submitForm(id) {
                                 var name = $('#name' + id).val();
                                 var phone = $('#phone' + id).val();
-
+                                
                                 function validatePhone(phone) {
                                     var re = /^\+?[0-9]{1,12}$/;
                                     return re.test(phone);
