@@ -7,6 +7,16 @@ $(document).ready(function() {
         var agree = $('#checkbox-2').is(':checked'); // no need for ? : since it will be true/false
         console.log('Checkbox 2: ', agree);
 
+        function validatePhone(phone) {
+            var re = /^\+?[0-9]{1,12}$/;
+            return re.test(phone);
+        }
+        
+        if (!validatePhone(userPhone)) {
+            $('.errors').html('<p style="color: red;">Please enter a valid phone number.</p>');
+            return;  
+        }
+
         var data = {
             'user': userName,
             'phone': userPhone,
@@ -15,6 +25,7 @@ $(document).ready(function() {
         };
 
         console.log('Data to be sent: ', data);
+
 
         $.ajax({
             url: 'form.php',
@@ -50,6 +61,16 @@ $(document).ready(function() {
         var userEmail = $('#data-email').val();
         var agree = $('#checkbox-1').is(':checked'); // no need for ? : since it will be true/false
         console.log('Checkbox 1: ', agree);
+
+        function validateEmail(email) {
+            var re = /\S+@\S+\.\S+/;
+            return re.test(email);
+        }
+    
+        if (!validateEmail(userEmail)) {
+            $('.errors').html('<p style="color: red;">Please enter a valid email address.</p>');
+            return;  
+        }
 
         var data = {
             'user': userName,

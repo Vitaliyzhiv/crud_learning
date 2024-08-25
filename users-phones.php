@@ -118,6 +118,16 @@ $phones_data = $result->findAll();
                                 var name = $('#name' + id).val();
                                 var phone = $('#phone' + id).val();
 
+                                function validatePhone(phone) {
+                                    var re = /^\+?[0-9]{1,12}$/;
+                                    return re.test(phone);
+                                }
+                                
+                                if (!validatePhone(phone)) {
+                                    alert('Некоректный формат телефона');
+                                    return false;
+                                }
+
                                 var data = {
                                     'user': name,
                                     'phone': phone

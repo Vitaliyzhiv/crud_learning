@@ -28,7 +28,7 @@ class FormController
         $errors = [
             'string' => 'Please fill the text data',
             'integer' => 'Please enter a valid integer',
-            'bool' => 'Please select a valid boolean value, check checkbox',
+            'bool' => 'Please select a valid boolean value ',
             'array' => 'Please provide a valid array'
         ];
 
@@ -47,7 +47,7 @@ class FormController
                 case 'string':
                     if (!is_string($value) || $value === '') {
                         $response['success'] = false;
-                        $response['message'] = $errors['string'];
+                        $response['message'] = $errors['string'] . ' for ' . $objname . '.';
                         return $response;
                     }
                     $response[$objname] = $value;
@@ -56,7 +56,7 @@ class FormController
                 case 'integer':
                     if ($value === '' || !is_numeric($value)) {
                         $response['success'] = false;
-                        $response['message'] = $errors['integer'];
+                        $response['message'] = $errors['integer']. ' for '. $objname . '.' ;
                         return $response;
                     }
                     $response[$objname] = (int) $value;
@@ -65,16 +65,16 @@ class FormController
                 case 'bool':
                     if ($value == 'false' || $value == '0') {
                         $response['success'] = false;
-                        $response['message'] = $errors['bool'];
+                        $response['message'] = $errors['bool'] . ' for ' . $objname . '.' ;
                         return $response;
                     }
-                    $response[$objname] = ($value === 'true' || $value === '1') ? 1 : 0;
+                    $response[$objname] = ($value == 'true' || $value == '1') ? 1 : 0;
                     break;
 
                 case 'array':
                     if (!is_array($value)) {
                         $response['success'] = false;
-                        $response['message'] = $errors['array'];
+                        $response['message'] = $errors['array'] . ' for ' . $objname . '.' ;
                         return $response;
                     }
                     $response[$objname] = $value;
