@@ -180,7 +180,7 @@ class FormController
     // print_r($params);
 
 
-    // Виконання запиту
+    // Complete query
     if ($this->db->query($query, $params)) {
         return true;
     } else {
