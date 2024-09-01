@@ -110,11 +110,11 @@ if (isset($_POST['edit'])) {
     $id = isset($_POST['id']) ? $_POST['id'] : '';
 
     if ($tableName && $dataJson && $id) {
-        // Декодуємо JSON в асоціативний масив
+        // Decoding JSON into associative array
         $data = json_decode($dataJson, true);
         // echo $data;
 
-        // Перевірка на помилки JSON
+        // Check for JSON errors
         if (json_last_error() === JSON_ERROR_NONE) {
             $formController = new FormController($config['db']);
 
