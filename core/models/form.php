@@ -1,37 +1,31 @@
 <?php
 
-// Include the necessary files
-include 'classes/formController.php';
-include 'classes/Db.php';
+namespace App\Controllers;
 
+require_once __DIR__ . '/../../vendor/autoload.php';
+use App\Models\Db;
 
-// Load the database configuration
-$config = require_once 'config.php';
+$config = require_once __DIR__ . '/../../config/config.php';
 
-// Get user ID from the URL query parameter if provided, otherwise set it to null
-$get_id = isset($_GET['id']) ? $_GET['id'] : null;
-
-
-// Create a database connection instance
-$db = (Db::getInstance())->getConnection($config['db']);
+$db = Db::getInstance()->getConnection($config['db']);
 
 // Insert data to user_phones db
 if (isset($_POST['new-data-btn'])) {
 
     $objnameType = [
-        'user' => 'string',
+        'name' => 'string',
         'phone' => 'integer',
         'checkbox' => 'bool'
     ];
     
     $fieldMapping = [
-        'user' => 'user',
+        'name' => 'user',
         'phone' => 'phone',
         'checkbox' => 'checkbox'
     ];
     
     // Create an instance of FormController
-    $formController = new FormController($config['db']);
+    $formController = new formController($config['db']);
     
     // Process the form data
     $response = $formController->insertData($objnameType, 'users_phones', $fieldMapping);
@@ -51,19 +45,19 @@ if (isset($_POST['new-data-btn'])) {
 if (isset($_POST['data-button'])) {
     
     $objnameType = [
-        'user' => 'string',
+        'name' => 'string',
         'email' => 'string',
         'checkbox' => 'bool'
     ];
 
     $fieldMapping = [
-        'user' => 'user',
+        'name' => 'user',
         'email' => 'email',
         'checkbox' => 'checkbox'
     ];
 
     // Create an instance of FormController
-    $formController = new FormController($config['db']);
+    $formController = new formController($config['db']);
 
     // Process the form data
     $response = $formController->insertData($objnameType, 'data_users', $fieldMapping);
@@ -87,7 +81,7 @@ if (isset($_POST['delete'])) {
 
     if ($tableName && $flag && $dataID) {
         // Create an instance of FormController
-        $formController = new FormController($config['db']);
+        $formController = new formController($config['db']);
 
         // Call the method to delete the data
         $result = $formController->deleteDataView($tableName, $flag, $dataID);
@@ -116,7 +110,7 @@ if (isset($_POST['edit'])) {
 
         // Check for JSON errors
         if (json_last_error() === JSON_ERROR_NONE) {
-            $formController = new FormController($config['db']);
+            $formController = new formController($config['db']);
 
             $result = $formController->editTable($tableName, $data, $id);
             if ($result) {
