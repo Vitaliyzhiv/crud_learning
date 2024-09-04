@@ -289,7 +289,9 @@ $(document).ready(function () {
                 success: function (response) {
                     if (response.success) {
                         $('.form-calc-result').val(response.result);
-                    } 
+                    } else {
+                        console.log('Error: ' + response.message);
+                    }
                 },
                 error: function (jqXHR, exception) {
                     if (jqXHR.status === 0) {
