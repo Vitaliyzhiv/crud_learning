@@ -21,15 +21,10 @@ class calculatorEval {
     /** 
      * Calculates the math expression
      * @param string $expression Math expression for calculation
-     * @return float $expression result
+     * @param string $postname POST field name where the result will be saved
+     * @return mixed $expression result
      */
-
-    /** 
-     * Calculates the math expression
-     * @param string $expression Math expression for calculation
-     * @return float|null Result of the calculation or null in case of an error
-     */
-    public function calculate($expression) {
+    public function calculate(string $expression, string $postname) {
         try {
             // parsing string expression
             $parseExpression = $this->parser->parse($expression);
@@ -37,6 +32,11 @@ class calculatorEval {
             // calculating expression
             $result = $parseExpression->accept($this->evaluator);
             
+            // storing result in $_POST as asocciative ['result' => $result] example
+
+            $_POST[$postname] = $result;
+            
+            // returning the result
             return $result;
         } catch (Exception $e) {
             // Log error or handle it accordingly
