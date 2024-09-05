@@ -20,7 +20,7 @@ $result = $db->query($sql);
 $emails_data = $result->findAll();
 
 // Renders a header
-$header = new header();
+$header = new Header();
 $header->render();
 ?>
         
@@ -165,5 +165,5 @@ $header->render();
 </div>
 <?php
 // render footer
-$footer = new footer();
+$footer = new Footer();
 $footer->render();

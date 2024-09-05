@@ -25,7 +25,7 @@ $result = $db->query($sql);
 $phones_data = $result->findAll();
 
 // render header
-$header = new header();
+$header = new Header();
 $header->render();
 ?>
 
@@ -176,5 +176,5 @@ $header->render();
 
 <?php 
 // render footer
-$footer = new footer();
+$footer = new Footer();
 $footer->render();

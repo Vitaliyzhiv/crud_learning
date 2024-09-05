@@ -20,7 +20,7 @@ use App\Models\form;
 $db = Db::getInstance()->getConnection($config['db']);
 
 // Renders a header 
-$header = new header();
+$header = new Header();
 $header->render();
 
 
@@ -81,5 +81,5 @@ $header->render();
 
 <?php
 // render footer
-$footer = new footer();
+$footer = new Footer();
 $footer->render();
