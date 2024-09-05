@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Models;
+
+use App\Controllers\formController;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Models\Db;
