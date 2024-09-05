@@ -1,4 +1,15 @@
 $(document).ready(function () {
+
+    function showAlertError(message) {
+        $('#modalBodyError').text(message);
+        $('#alertModalError').modal('show');
+    }
+
+    function showAlertSuccess(message) {
+        $('#modalBodySuccess').text(message);
+        $('#alertModalSuccess').modal('show');
+    }
+
     $('#btn-form2').on('click', function (e) {
         e.preventDefault();  // prevent standard behaviour 
 
@@ -204,34 +215,42 @@ $(document).ready(function () {
         // check Math expression
         function validateMathExpression(expression) {
 
+            // check if expression have at least one operator 
+            const haveOperator = /[+\-*^/]/;
+            
+            if (!haveOperator.test(expression)) {
+                // add alert
+                showAlertError("Expression is not valid:  Math expression should contain at least one operator " + expression);
+                return true;
+            }
+
             // first check symbols in expression 
-            const regex = /^[0-9+\-*/.]+$/;
+            const regex = /^[0-9+\-*^/.]+$/;
 
             if (!regex.test(expression)) {
-                console.log("Expression is not valid for math: " + expression);
                 // add alert
-                alert("Expression is not valid for math: " + expression);
+                showAlertError("Expression is not valid for math: " + expression);
                 return true;
             }
 
 
             // check for numbers starts with 0
-            const invalidNumberRegex = /(^|[\+\-\*\/])0\d+/;
+            const invalidNumberRegex = /(^|[\+\-^\*\/])0\d+/;
 
             if (invalidNumberRegex.test(expression)) {
                 // add alert 
-                alert("Expression is not valid:  Integer type numbers can't start with 0  Your expression: " + expression);
-                console.log("Expression is not valid: " + expression);
+                showAlertError("Expression is not valid:  Integer type numbers can't start with 0  Your expression: " + expression);
+
                 return true;
             }
 
             // Check for incorrect consecutive operators
-            const invalidOperatorSequenceRegex = /[\+\-\*\/\.]{2,}/;
+            const invalidOperatorSequenceRegex = /[\+\-^\*\/\.]{2,}/;
 
             if (invalidOperatorSequenceRegex.test(expression)) {
                 // add alert
-                alert("Expression is not valid:  Incorrect consecutive operators " + expression);
-                console.log("Expression is not valid: " + expression);
+                showAlertError("Expression is not valid: Expression can`t have consecutive operators " + expression);
+          
                 return true;
             }
 
@@ -240,18 +259,18 @@ $(document).ready(function () {
 
             if (invalidDecimalRegex.test(expression)) {
                 // add alert
-                alert("Expression is not valid:  Incorrect decimal numbers " + expression);
-                console.log("Expression is not valid: " + expression);
+                showAlertError("Expression is not valid:  Incorrect decimal numbers " + expression);
+       
                 return true;
             }
 
             // check starts or ends with operatos
-            const operatorsStartOrEnd = /^[-+*/.]|[-+*/.]$/;
+            const operatorsStartOrEnd = /^[-+*^/.]|[-+*^/.]$/;
 
             if (operatorsStartOrEnd.test(expression)) {
                 // add alert
-                alert("Expression is not valid:  Expression can`t starts or ends with operator " + expression);
-                console.log("Expression is not valid: " + expression);
+                showAlertError("Expression is not valid:  Expression can`t starts or ends with operator " + expression);
+               
                 return true;
             }
 
@@ -259,11 +278,10 @@ $(document).ready(function () {
 
             if (divideByZero.test(expression)) {
                 // add alert
-                alert("Expression is not valid:  Division by zero " + expression);
-                console.log("Expression is not valid: " + expression);
+                showAlertError("Expression is not valid:  Division by zero " + expression);
+               
                 return true;
             }
-
 
             // if all checks is completed return false as we don`t have any errors
             return false;
@@ -289,6 +307,10 @@ $(document).ready(function () {
                 success: function (response) {
                     if (response.success) {
                         $('.form-calc-result').val(response.result);
+                        $('.success').html('<p style="color: green;">' + response.message + '</p>');
+                        setTimeout(function () {
+                            $('.success').html('');
+                        }, 1000);
                     } else {
                         console.log('Error: ' + response.message);
                     }
