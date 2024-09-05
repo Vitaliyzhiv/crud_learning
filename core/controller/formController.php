@@ -60,7 +60,7 @@ class formController
                         $response['message'] = $errors['integer']. ' for '. $objname . '.' ;
                         return $response;
                     }
-                    $response[$objname] = (int) $value;
+                    $response[$objname] =  $value;
                     break;
 
                 case 'bool':
